@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { fetchTransfers } from "@/Services/http";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -9,6 +10,14 @@ const truncText = (str: string, length: number) => {
   }
   return str;
 };
+
+const timestampToDate = (timestamp: number) => {
+    const date = new Date(timestamp * 1000);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
 
 const DetailsModal = ({
   open,
@@ -126,19 +135,27 @@ const Page = () => {
           {truncText(data.id, 10)}
         </div>
         <div className="border h-10 flex justify-center items-center">
-          {data.blockNumber}
+          <a href={`https://etherscan.io/block/${data.blockNumber}`} className="text-blue-500">
+            {data.blockNumber}
+          </a>
         </div>
         <div className="border h-10 flex justify-center items-center">
-          {data.blockTimestamp}
+          {timestampToDate(data.blockTimestamp)}
         </div>
         <div className="border h-10 flex justify-center items-center">
-          {truncText(data.from, 20)}
+          <a href={`https://etherscan.io/address/${data.from}`} className="text-blue-500">
+            {truncText(data.from, 20)}
+          </a>
         </div>
         <div className="border h-10 flex justify-center items-center">
-          {truncText(data.to, 20)}
+          <a href={`https://etherscan.io/address/${data.to}`} className="text-blue-500">
+            {truncText(data.to, 20)}
+          </a>
         </div>
         <div className="border h-10 flex justify-center items-center">
-          {truncText(data.transactionHash, 20)}
+          <a href={`https://etherscan.io/address/${data.transactionHash}`} className="text-blue-500">
+            {truncText(data.transactionHash, 20)}
+          </a>
         </div>
         <div className="border h-10 flex justify-center items-center">
           {data.value/10000}
@@ -162,9 +179,9 @@ const Page = () => {
       />
       <div>
         {/* Navbar */}
-        <div>
+        <div className="pt-32 pb-6">
           {/* <h2>Transactions for {token}</h2> */}
-          <h2 className="text-3xl font-bold my-3">Transactions for USDT</h2>
+          <h2 className="text-center text-3xl font-bold my-3">Transactions for USDT</h2>
           <div className=" grid grid-cols-7 justify-between thead">
             <div className="border h-10 flex justify-center items-center">
               ID
